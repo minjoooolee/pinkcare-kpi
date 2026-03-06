@@ -425,6 +425,8 @@
     <span class="brand">핑크케어 <span>KPI</span></span>
   </div>
   <div class="period-badge">기준: <span>30일</span> · PoC 단계</div>
+  <div id="header-actions" style="display:flex; gap:8px; align-items:center;"></div>
+
 </div>
 
 <!-- ══ PRIMARY KPI ══ -->
@@ -612,6 +614,14 @@
   </div>
 </div>
 
+<!-- ══ SHARE TOAST ══ -->
+<div id="share-toast" style="
+  position:fixed; bottom:32px; left:50%; transform:translateX(-50%) translateY(20px);
+  background:var(--charcoal); color:#fff; padding:10px 22px; border-radius:8px;
+  font-size:13px; font-weight:500; opacity:0; transition:all .25s; pointer-events:none; z-index:200;
+  white-space:nowrap;
+">링크가 복사됐습니다 ✓</div>
+
 <script>
 // ── CONFIG ──────────────────────────────────────────────
 const METRICS = {
@@ -626,24 +636,88 @@ const METRICS = {
   chat_from_result: { label: '오픈채팅 유입 (결과지)',   target: 10  },
 };
 
+const EDIT_PASSWORD = 'pinkcare2025';
+
+// ── MODE 판별 ─────────────────────────────────────────────
+// ?view=1 파라미터가 있으면 뷰어 모드, 없으면 편집 모드
+const params = new URLSearchParams(window.location.search);
+const IS_VIEW_MODE = params.has('view');
+
 // ── STATE ────────────────────────────────────────────────
-const STORAGE_KEY = 'pinkcare_kpi_v1';
 let state = {};
 
 function loadState() {
+  Object.keys(METRICS).forEach(k => state[k] = 0);
   try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) state = JSON.parse(saved);
+    // 데이터는 항상 URL 해시에서 읽기
+    const hash = window.location.hash.slice(1);
+    if (hash) {
+      hash.split('&').forEach(pair => {
+        const [k, v] = pair.split('=');
+        if (k && METRICS[k] !== undefined) state[k] = parseInt(v, 10) || 0;
+      });
+    }
   } catch(e) {}
-  // ensure all keys exist
-  Object.keys(METRICS).forEach(k => {
-    if (state[k] === undefined) state[k] = 0;
-  });
 }
 
 function saveState() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  const hash = Object.keys(state).map(k => `${k}=${state[k]}`).join('&');
+  history.replaceState(null, '', (IS_VIEW_MODE ? '?view=1' : '') + '#' + hash);
   updateFooter();
+}
+
+function buildShareUrl() {
+  const hash = Object.keys(state).map(k => `${k}=${state[k]}`).join('&');
+  const base = window.location.href.split('?')[0].split('#')[0];
+  return `${base}?view=1#${hash}`;
+}
+
+// ── UI 모드 적용 ──────────────────────────────────────────
+function applyMode() {
+  const actions = document.getElementById('header-actions');
+
+  if (IS_VIEW_MODE) {
+    // 뷰어 모드: 카드 클릭 불가, 수정 힌트 숨김, 뷰어 배지 표시
+    document.querySelectorAll('.card').forEach(c => {
+      c.style.cursor = 'default';
+      c.onclick = null;
+    });
+    document.querySelectorAll('.sub-card').forEach(c => {
+      c.style.cursor = 'default';
+      c.onclick = null;
+    });
+    document.querySelectorAll('.click-hint').forEach(el => el.style.display = 'none');
+
+    actions.innerHTML = `
+      <span style="font-size:11px; color:var(--gray-text); font-weight:500; padding:7px 12px;
+        background:var(--bg); border:1px solid var(--line); border-radius:6px;">
+        👁 보기 전용
+      </span>`;
+  } else {
+    // 편집 모드: 공유 링크 버튼 표시
+    actions.innerHTML = `
+      <button onclick="copyShareLink()" style="
+        background:var(--blue-accent); color:#fff; border:none; border-radius:6px;
+        padding:7px 16px; font-family:'Inter',sans-serif; font-size:12px; font-weight:600;
+        cursor:pointer; display:flex; align-items:center; gap:6px; white-space:nowrap;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+        보고용 링크 복사
+      </button>`;
+  }
+}
+
+// ── SHARE ─────────────────────────────────────────────────
+function copyShareLink() {
+  const url = buildShareUrl();
+  navigator.clipboard.writeText(url).then(() => {
+    const toast = document.getElementById('share-toast');
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateX(-50%) translateY(0)';
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateX(-50%) translateY(20px)';
+    }, 2400);
+  });
 }
 
 // ── RENDER ───────────────────────────────────────────────
@@ -660,7 +734,6 @@ function renderAll() {
     const val = state[id] || 0;
     const el = document.getElementById('val-' + id);
     if (el) el.textContent = val.toLocaleString();
-
     if (m.target !== null) {
       const pct = Math.min(Math.round(val / m.target * 100), 100);
       const barEl = document.getElementById('bar-' + id);
@@ -684,10 +757,11 @@ function updateFooter() {
   document.getElementById('footer-time').textContent = '마지막 업데이트: ' + fmt;
 }
 
-// ── MODAL ────────────────────────────────────────────────
+// ── MODAL (편집 모드 전용) ────────────────────────────────
 let currentId = null;
 
 function openModal(id) {
+  if (IS_VIEW_MODE) return;
   currentId = id;
   const m = METRICS[id];
   document.getElementById('modal-title').textContent = m.label;
@@ -717,7 +791,6 @@ function saveModal() {
   closeModalDirect();
 }
 
-// Enter key in modal
 document.getElementById('modal-input').addEventListener('keydown', e => {
   if (e.key === 'Enter') saveModal();
   if (e.key === 'Escape') closeModalDirect();
@@ -725,8 +798,9 @@ document.getElementById('modal-input').addEventListener('keydown', e => {
 
 // ── INIT ─────────────────────────────────────────────────
 loadState();
+applyMode();
 renderAll();
-updateFooter();
+if (window.location.hash) updateFooter();
 </script>
 </body>
 </html>
