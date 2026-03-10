@@ -766,8 +766,28 @@
   }
   function copyViewLink() {
     const url = buildViewURL();
-    navigator.clipboard.writeText(url).catch(() => {});
-    showToast('보기용 링크가 복사됐습니다 ✓');
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url)
+        .then(() => showToast('보기용 링크가 복사됐습니다 ✓'))
+        .catch(() => fallbackCopy(url));
+    } else {
+      fallbackCopy(url);
+    }
+  }
+  function fallbackCopy(text) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;opacity:0;pointer-events:none';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try {
+      document.execCommand('copy');
+      showToast('보기용 링크가 복사됐습니다 ✓');
+    } catch(e) {
+      showToast('링크 복사 실패 — 직접 복사해 주세요');
+    }
+    document.body.removeChild(ta);
   }
   // ── Render ──
   function render() {
