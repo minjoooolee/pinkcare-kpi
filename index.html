@@ -1,806 +1,844 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>핑크케어 KPI 대시보드</title>
-<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --blue-accent: #4A7FA5;
-    --blue-mid:    #7AAFC8;
-    --blue-soft:   #B8D8E8;
-    --blue-pale:   #E8F2F8;
-    --bg:          #F4F6F8;
-    --charcoal:    #1C2128;
-    --gray-text:   #5A6470;
-    --gray-light:  #C8D0D8;
-    --line:        #E0E6EC;
-    --white:       #FFFFFF;
-    --green:       #2A9D6E;
-    --amber:       #C07A2A;
-    --red:         #B03A3A;
-    --radius:      12px;
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>핑크케어 KPI 대시보드</title>
+  <style>
+    :root {
+      --pink: #2563eb;
+      --pink-light: #dbeafe;
+      --pink-mid: #93c5fd;
+      --gray-bg: #f0f5ff;
+      --gray-border: #dce8fb;
+      --gray-text: #888;
+      --dark: #0f172a;
+      --green: #22c55e;
+      --yellow: #f59e0b;
+      --red: #ef4444;
+      --blue: #1d4ed8;
+      --teal: #0891b2;
+    }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-  body {
-    font-family: 'Inter', sans-serif;
-    background: var(--bg);
-    color: var(--charcoal);
-    min-height: 100vh;
-    padding: 48px 24px 80px;
-  }
+    body {
+      font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', -apple-system, sans-serif;
+      background: var(--gray-bg);
+      color: var(--dark);
+      min-height: 100vh;
+      padding-bottom: 60px;
+    }
 
-  /* ── HEADER ── */
-  .header {
-    max-width: 960px;
-    margin: 0 auto 52px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 16px;
-    flex-wrap: wrap;
-    padding-bottom: 24px;
-    border-bottom: 1px solid var(--line);
-  }
-  .logo-row { display: flex; align-items: center; gap: 14px; }
-  .logo-dot {
-    width: 8px; height: 32px;
-    border-radius: 4px;
-    background: var(--blue-accent);
-    flex-shrink: 0;
-  }
-  .brand {
-    font-family: 'Libre Baskerville', serif;
-    font-size: 22px;
-    color: var(--charcoal);
-    letter-spacing: -0.3px;
-    font-weight: 400;
-  }
-  .brand span { color: var(--blue-accent); }
-  .period-badge {
-    background: var(--white);
-    border: 1px solid var(--line);
-    border-radius: 6px;
-    padding: 6px 16px;
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--gray-text);
-    white-space: nowrap;
-    letter-spacing: .2px;
-  }
-  .period-badge span { color: var(--blue-accent); font-weight: 600; }
+    /* ── Header ── */
+    header {
+      background: white;
+      border-bottom: 1px solid var(--gray-border);
+      padding: 18px 24px 14px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--pink);
+      flex-shrink: 0;
+    }
+    header h1 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--dark);
+      letter-spacing: -0.3px;
+    }
+    header h1 span { color: var(--pink); }
+    .header-meta {
+      margin-left: auto;
+      font-size: 12px;
+      color: var(--gray-text);
+      background: var(--gray-bg);
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid var(--gray-border);
+    }
 
-  /* ── SECTION LABEL ── */
-  .section-header {
-    max-width: 960px;
-    margin: 0 auto 20px;
-    display: flex;
-    align-items: center;
-    gap: 0;
-    background: var(--white);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    overflow: hidden;
-  }
-  .section-tag {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 1.8px;
-    text-transform: uppercase;
-    padding: 14px 20px;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-  .section-tag.primary  { background: var(--blue-accent); color: #fff; }
-  .section-tag.secondary { background: var(--charcoal); color: #fff; }
-  .section-divider {
-    width: 1px;
-    align-self: stretch;
-    background: var(--line);
-    flex-shrink: 0;
-  }
-  .section-question {
-    padding: 12px 24px;
-    flex: 1;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .section-question-text {
-    font-family: 'Libre Baskerville', serif;
-    font-size: 16px;
-    font-weight: 400;
-    color: var(--charcoal);
-    line-height: 1.3;
-  }
-  .section-question-text em {
-    font-style: normal;
-    color: var(--blue-accent);
-    font-weight: 700;
-  }
-  .section-question-mark {
-    width: 24px; height: 24px;
-    border-radius: 50%;
-    background: var(--blue-pale);
-    color: var(--blue-accent);
-    font-size: 13px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-  .section-tag.secondary ~ .section-divider { background: #3a3f48; }
-  .section-header.secondary-header .section-question-text em { color: var(--charcoal); }
-  .section-header.secondary-header .section-question-mark {
-    background: #EDEEF0;
-    color: var(--charcoal);
-  }
+    /* ── Main ── */
+    main { max-width: 720px; margin: 0 auto; padding: 24px 16px; }
 
-  /* ── GRID ── */
-  .grid {
-    max-width: 960px;
-    margin: 0 auto 48px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 14px;
-  }
+    /* ── Section label ── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .section-badge {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+    }
+    .badge-primary { background: var(--pink); color: white; }
+    .badge-secondary { background: var(--dark); color: white; }
+    .section-question {
+      font-size: 13px;
+      color: var(--gray-text);
+      font-style: italic;
+    }
+    .section-divider { border: none; border-top: 2px solid var(--gray-border); margin: 32px 0 24px; }
 
-  /* ── CARD ── */
-  .card {
-    background: var(--white);
-    border-radius: var(--radius);
-    border: 1px solid var(--line);
-    padding: 24px 24px 20px;
-    position: relative;
-    overflow: hidden;
-    transition: transform .18s, box-shadow .18s;
-    cursor: pointer;
-  }
-  .card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 28px rgba(74,127,165,.10);
-  }
-  .card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    border-radius: var(--radius) var(--radius) 0 0;
-    background: var(--blue-accent);
-    opacity: 0;
-    transition: opacity .18s;
-  }
-  .card:hover::before { opacity: 1; }
+    /* ── KPI Card ── */
+    .kpi-card {
+      background: white;
+      border: 1px solid var(--gray-border);
+      border-radius: 14px;
+      padding: 18px 20px;
+      margin-bottom: 12px;
+      position: relative;
+      transition: box-shadow 0.2s;
+    }
+    .kpi-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+    .kpi-card.new-card {
+      border-color: var(--pink-mid);
+      background: linear-gradient(135deg, #fff 0%, #eff6ff 100%);
+    }
+    .new-tag {
+      position: absolute;
+      top: 14px; right: 14px;
+      font-size: 10px;
+      font-weight: 700;
+      background: var(--pink);
+      color: white;
+      padding: 2px 8px;
+      border-radius: 10px;
+      letter-spacing: 0.3px;
+    }
 
-  /* Wide card (span 2) */
-  .card.wide { grid-column: span 2; }
-  @media (max-width: 600px) { .card.wide { grid-column: span 1; } }
+    .kpi-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .kpi-tag {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: var(--pink-light);
+      color: var(--pink);
+      flex-shrink: 0;
+      margin-top: 2px;
+      letter-spacing: 0.3px;
+    }
+    .kpi-tag.tag-blue { background: #eff6ff; color: var(--blue); }
+    .kpi-tag.tag-teal { background: #f0fdfa; color: var(--teal); }
+    .kpi-tag.tag-yellow { background: #fffbeb; color: var(--yellow); }
+    .kpi-tag.tag-dark { background: #f1f1f5; color: #555; }
 
-  .card-label {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--blue-mid);
-    margin-bottom: 5px;
-  }
-  .card-title {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--charcoal);
-    margin-bottom: 4px;
-    line-height: 1.4;
-  }
-  .card-note {
-    font-size: 11.5px;
-    color: var(--gray-text);
-    line-height: 1.55;
-    margin-bottom: 20px;
-  }
+    .kpi-title { font-size: 14px; font-weight: 700; line-height: 1.4; }
+    .kpi-desc {
+      font-size: 12px;
+      color: var(--gray-text);
+      margin-bottom: 14px;
+      line-height: 1.6;
+    }
 
-  /* ── METRIC ROW ── */
-  .metric-row {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 8px;
-    margin-bottom: 10px;
-  }
-  .metric-current {
-    font-family: 'Libre Baskerville', serif;
-    font-size: 38px;
-    line-height: 1;
-    color: var(--charcoal);
-    font-weight: 400;
-  }
-  .metric-target {
-    font-size: 12px;
-    color: var(--gray-text);
-    padding-bottom: 4px;
-    white-space: nowrap;
-  }
-  .metric-target b { color: var(--charcoal); font-weight: 600; }
+    /* ── Progress ── */
+    .kpi-progress {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .progress-bar-wrap {
+      flex: 1;
+      height: 8px;
+      background: var(--gray-bg);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      border-radius: 4px;
+      background: var(--pink);
+      transition: width 0.6s ease;
+    }
+    .progress-bar.bar-blue { background: var(--blue); }
+    .progress-bar.bar-teal { background: var(--teal); }
+    .progress-bar.bar-yellow { background: var(--yellow); }
 
-  /* ── PROGRESS BAR ── */
-  .progress-track {
-    height: 4px;
-    background: var(--line);
-    border-radius: 999px;
-    overflow: hidden;
-    margin-bottom: 10px;
-  }
-  .progress-fill {
-    height: 100%;
-    border-radius: 999px;
-    background: var(--blue-accent);
-    transition: width 1s cubic-bezier(.4,0,.2,1);
-  }
+    .kpi-nums {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .kpi-current {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--dark);
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+    .kpi-current .unit { font-size: 14px; font-weight: 500; color: var(--gray-text); margin-left: 2px; }
+    .kpi-target { font-size: 12px; color: var(--gray-text); }
+    .kpi-pct {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--pink);
+    }
+    .edit-btn {
+      position: absolute;
+      top: 14px; right: 14px;
+      font-size: 11px;
+      color: var(--gray-text);
+      background: var(--gray-bg);
+      border: 1px solid var(--gray-border);
+      border-radius: 6px;
+      padding: 3px 8px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .edit-btn:hover { background: var(--pink-light); color: var(--pink); border-color: var(--pink-mid); }
 
-  /* ── STATUS BADGE ── */
-  .status-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 12px;
-    color: var(--gray-text);
-  }
-  .status-pill {
-    font-size: 10px;
-    font-weight: 600;
-    padding: 3px 10px;
-    border-radius: 4px;
-    letter-spacing: .5px;
-    text-transform: uppercase;
-  }
-  .status-pill.on-track  { background: #E6F4EE; color: var(--green); }
-  .status-pill.at-risk   { background: #FBF1E3; color: var(--amber); }
-  .status-pill.critical  { background: #FBEBEB; color: var(--red); }
-  .status-pill.achieved  { background: #E6F4EE; color: var(--green); }
+    /* ── Sub metrics ── */
+    .sub-metrics {
+      border-top: 1px solid var(--gray-border);
+      margin-top: 14px;
+      padding-top: 12px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .sub-metric {
+      background: var(--gray-bg);
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
+    .sub-metric.full-width { grid-column: 1 / -1; }
+    .sub-label { font-size: 11px; color: var(--gray-text); margin-bottom: 4px; }
+    .sub-val { font-size: 16px; font-weight: 700; color: var(--dark); }
+    .sub-val .sub-unit { font-size: 11px; font-weight: 400; color: var(--gray-text); }
+    .sub-target { font-size: 11px; color: var(--gray-text); margin-top: 2px; }
 
-  /* ── SUB-METRICS ── */
-  .sub-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-top: 16px;
-    padding-top: 16px;
-    border-top: 1px solid var(--line);
-  }
-  .sub-card {
-    background: var(--bg);
-    border-radius: 8px;
-    padding: 12px 14px;
-    border: 1px solid var(--line);
-    cursor: pointer;
-    transition: border-color .15s;
-  }
-  .sub-card:hover { border-color: var(--blue-mid); }
-  .sub-label {
-    font-size: 10px;
-    font-weight: 600;
-    color: var(--blue-accent);
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 2px;
-  }
-  .sub-name {
-    font-size: 11px;
-    color: var(--gray-text);
-    margin-bottom: 8px;
-    line-height: 1.4;
-  }
-  .sub-metric-row {
-    display: flex;
-    align-items: baseline;
-    gap: 5px;
-  }
-  .sub-current {
-    font-family: 'Libre Baskerville', serif;
-    font-size: 22px;
-    color: var(--charcoal);
-  }
-  .sub-target { font-size: 11px; color: var(--gray-text); }
+    /* ── Distribution tag ── */
+    .dist-note {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      color: #7c3aed;
+      background: #f5f3ff;
+      border: 1px solid #ddd6fe;
+      border-radius: 6px;
+      padding: 4px 9px;
+      margin-top: 8px;
+    }
+    .dist-note::before { content: '분포 조건'; font-weight: 700; }
 
-  /* ── DIVIDER ── */
-  .divider {
-    max-width: 960px;
-    margin: 0 auto 40px;
-    border: none;
-    border-top: 1px solid var(--line);
-  }
+    /* ── Funnel table ── */
+    .funnel-table {
+      border-top: 1px solid var(--gray-border);
+      margin-top: 14px;
+      padding-top: 12px;
+    }
+    .funnel-row {
+      display: flex;
+      align-items: center;
+      padding: 7px 0;
+      border-bottom: 1px dashed var(--gray-border);
+      font-size: 12px;
+      gap: 8px;
+    }
+    .funnel-row:last-child { border-bottom: none; }
+    .funnel-step {
+      font-size: 10px;
+      font-weight: 700;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      background: var(--pink-light);
+      color: var(--pink);
+    }
+    .funnel-name { flex: 1; font-weight: 500; }
+    .funnel-val { font-weight: 700; color: var(--dark); font-size: 13px; min-width: 32px; text-align: right; }
+    .funnel-rate {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 10px;
+      min-width: 50px;
+      text-align: center;
+    }
+    .funnel-rate.rate-pink { background: var(--pink-light); color: var(--pink); }
+    .funnel-rate.rate-blue { background: #eff6ff; color: var(--blue); }
+    .funnel-rate.rate-teal { background: #f0fdfa; color: var(--teal); }
+    .funnel-rate.tbd { background: #f1f1f5; color: #999; }
 
-  /* ── EDIT MODAL ── */
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(28,33,40,.38);
-    z-index: 100;
-    align-items: center;
-    justify-content: center;
-  }
-  .modal-overlay.open { display: flex; }
-  .modal {
-    background: var(--white);
-    border-radius: 14px;
-    padding: 32px;
-    width: 100%;
-    max-width: 400px;
-    box-shadow: 0 20px 56px rgba(28,33,40,.14);
-    animation: slideUp .22s cubic-bezier(.4,0,.2,1);
-  }
-  @keyframes slideUp {
-    from { opacity:0; transform:translateY(16px); }
-    to   { opacity:1; transform:translateY(0); }
-  }
-  .modal-title {
-    font-family: 'Libre Baskerville', serif;
-    font-size: 18px;
-    color: var(--charcoal);
-    margin-bottom: 4px;
-    font-weight: 400;
-  }
-  .modal-sub {
-    font-size: 12px;
-    color: var(--gray-text);
-    margin-bottom: 24px;
-  }
-  .field { margin-bottom: 18px; }
-  .field label {
-    display: block;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--gray-text);
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-  .field input {
-    width: 100%;
-    padding: 10px 14px;
-    border: 1.5px solid var(--line);
-    border-radius: 8px;
-    font-family: 'Inter', sans-serif;
-    font-size: 15px;
-    color: var(--charcoal);
-    background: var(--bg);
-    outline: none;
-    transition: border-color .15s;
-  }
-  .field input:focus { border-color: var(--blue-accent); }
-  .modal-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 8px;
-  }
-  .btn {
-    flex: 1;
-    padding: 10px;
-    border: none;
-    border-radius: 8px;
-    font-family: 'Inter', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: opacity .15s;
-  }
-  .btn:hover { opacity: .82; }
-  .btn-primary { background: var(--blue-accent); color: #fff; }
-  .btn-ghost { background: var(--line); color: var(--gray-text); }
+    /* ── Quality card ── */
+    .quality-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px dashed var(--gray-border);
+    }
+    .quality-row:last-child { border-bottom: none; }
+    .q-label { font-size: 12px; font-weight: 500; }
+    .q-sub { font-size: 11px; color: var(--gray-text); margin-top: 2px; }
+    .q-target {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--teal);
+      background: #f0fdfa;
+      padding: 3px 9px;
+      border-radius: 8px;
+    }
 
-  /* ── FOOTER ── */
-  .footer {
-    max-width: 960px;
-    margin: 0 auto;
-    text-align: right;
-    font-size: 11px;
-    color: var(--gray-light);
-    letter-spacing: .2px;
-  }
+    /* ── Footer ── */
+    .footer-update {
+      text-align: center;
+      font-size: 12px;
+      color: var(--gray-text);
+      margin-top: 24px;
+    }
 
-  /* click hint */
-  .click-hint {
-    position: absolute;
-    top: 14px; right: 16px;
-    font-size: 10px;
-    color: var(--line);
-    font-weight: 500;
-    letter-spacing: .4px;
-    text-transform: uppercase;
-    transition: color .18s;
-  }
-  .card:hover .click-hint { color: var(--blue-soft); }
-</style>
+    /* ── Modal ── */
+    .modal-backdrop {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      width: 320px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+    .modal h3 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .modal p { font-size: 12px; color: var(--gray-text); margin-bottom: 14px; }
+    .modal input {
+      width: 100%; border: 1.5px solid var(--gray-border);
+      border-radius: 8px; padding: 10px 12px;
+      font-size: 16px; outline: none;
+      transition: border-color 0.15s;
+    }
+    .modal input:focus { border-color: var(--pink); }
+    .modal-btns { display: flex; gap: 8px; margin-top: 14px; }
+    .btn-cancel {
+      flex: 1; padding: 10px; border-radius: 8px;
+      border: 1.5px solid var(--gray-border);
+      background: white; font-size: 13px; cursor: pointer;
+    }
+    .btn-save {
+      flex: 1; padding: 10px; border-radius: 8px;
+      border: none; background: var(--pink);
+      color: white; font-size: 13px; font-weight: 700; cursor: pointer;
+    }
+
+    /* ── Copy toast ── */
+    .toast {
+      position: fixed; bottom: 24px; left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--dark); color: white;
+      font-size: 13px; padding: 10px 20px;
+      border-radius: 20px; opacity: 0;
+      transition: all 0.3s; pointer-events: none;
+      z-index: 300;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<div class="header">
-  <div class="logo-row">
-    <div class="logo-dot"></div>
-    <span class="brand">핑크케어 <span>KPI</span></span>
-  </div>
-  <div class="period-badge">기준: <span>30일</span> · PoC 단계</div>
-  <div id="header-actions" style="display:flex; gap:8px; align-items:center;"></div>
+<header>
+  <div class="logo-dot"></div>
+  <h1>핑크케어 <span>KPI</span></h1>
+  <span class="header-meta">30일 · PoC 단계</span>
+</header>
 
-</div>
+<main>
 
-<!-- ══ PRIMARY KPI ══ -->
-<div class="section-header">
-  <span class="section-tag primary">Primary KPI</span>
-  <div class="section-divider"></div>
-  <div class="section-question">
-    <div class="section-question-mark">?</div>
-    <span class="section-question-text"><em>커뮤니티가 형성될만 한가?</em></span>
-  </div>
-</div>
-
-<div class="grid" id="primary-grid">
-
-  <!-- 1. 핑크케어 유입 -->
-  <div class="card" data-id="inflow_p" onclick="openModal('inflow_p')">
-    <span class="click-hint">수정 ✦</span>
-    <div class="card-label">유입</div>
-    <div class="card-title">핑크케어 유입</div>
-    <div class="card-note">SEO 마케팅 의도적 미실시 — 자연 유입 중심</div>
-    <div class="metric-row">
-      <div class="metric-current" id="val-inflow_p">0</div>
-      <div class="metric-target">목표 <b>100명</b></div>
-    </div>
-    <div class="progress-track"><div class="progress-fill" id="bar-inflow_p" style="width:0%"></div></div>
-    <div class="status-row">
-      <span id="pct-inflow_p">0%</span>
-      <span class="status-pill" id="pill-inflow_p">–</span>
-    </div>
+  <!-- ════════════════════════════════
+       PRIMARY KPI
+  ════════════════════════════════ -->
+  <div class="section-header">
+    <span class="section-badge badge-primary">Primary KPI</span>
+    <span class="section-question">커뮤니티가 형성될만 한가?</span>
   </div>
 
-  <!-- 2. 오픈채팅 참여자 -->
-  <div class="card" data-id="chat_join" onclick="openModal('chat_join')">
-    <span class="click-hint">수정 ✦</span>
-    <div class="card-label">참여</div>
-    <div class="card-title">오픈채팅 참여자 수</div>
-    <div class="card-note">액티브 사용자 기준 5배 규모 목표</div>
-    <div class="metric-row">
-      <div class="metric-current" id="val-chat_join">0</div>
-      <div class="metric-target">목표 <b>20명</b></div>
-    </div>
-    <div class="progress-track"><div class="progress-fill" id="bar-chat_join" style="width:0%"></div></div>
-    <div class="status-row">
-      <span id="pct-chat_join">0%</span>
-      <span class="status-pill" id="pill-chat_join">–</span>
-    </div>
-  </div>
-
-  <!-- 3. 오픈채팅 메시지 -->
-  <div class="card" data-id="messages" onclick="openModal('messages')">
-    <span class="click-hint">수정 ✦</span>
-    <div class="card-label">대화</div>
-    <div class="card-title">오픈채팅 메시지 수</div>
-    <div class="card-note">질문–경험 공유–답변 루프 형성 최소 규모</div>
-    <div class="metric-row">
-      <div class="metric-current" id="val-messages">0</div>
-      <div class="metric-target">목표 <b>50건</b></div>
-    </div>
-    <div class="progress-track"><div class="progress-fill" id="bar-messages" style="width:0%"></div></div>
-    <div class="status-row">
-      <span id="pct-messages">0%</span>
-      <span class="status-pill" id="pill-messages">–</span>
-    </div>
-  </div>
-
-  <!-- 4. 액티브 사용자 (wide) -->
-  <div class="card" data-id="active" onclick="openModal('active')">
-    <span class="click-hint">수정 ✦</span>
-    <div class="card-label">액티브</div>
-    <div class="card-title">오픈채팅 액티브 사용자</div>
-    <div class="card-note">초기 커뮤니티 대화 루프 형성: 3–5명 Active user 필요</div>
-    <div class="metric-row">
-      <div class="metric-current" id="val-active">0</div>
-      <div class="metric-target">목표 <b>4명</b></div>
-    </div>
-    <div class="progress-track"><div class="progress-fill" id="bar-active" style="width:0%"></div></div>
-    <div class="status-row">
-      <span id="pct-active">0%</span>
-      <span class="status-pill" id="pill-active">–</span>
-    </div>
-    <div class="sub-grid">
-      <div class="sub-card" onclick="event.stopPropagation(); openModal('light_active')">
-        <div class="sub-label">라이트</div>
-        <div class="sub-name">30일 내 메시지 1건 이상</div>
-        <div class="sub-metric-row">
-          <div class="sub-current" id="val-light_active">0</div>
-          <div class="sub-target">명</div>
-        </div>
+  <!-- P1: 핑크케어 유입 -->
+  <div class="kpi-card">
+    <button class="edit-btn" onclick="openModal('inflow_p')">수정 ✦</button>
+    <div class="kpi-top">
+      <span class="kpi-tag">유입</span>
+      <div>
+        <div class="kpi-title">핑크케어 유입</div>
       </div>
-      <div class="sub-card" onclick="event.stopPropagation(); openModal('core_active')">
-        <div class="sub-label">코어</div>
-        <div class="sub-name">메시지 5건+ 타인 글 반응 포함</div>
-        <div class="sub-metric-row">
-          <div class="sub-current" id="val-core_active">0</div>
-          <div class="sub-target">명</div>
-        </div>
+    </div>
+    <div class="kpi-desc">SEO 마케팅 의도적 미실시 — 자연 유입·환우 네트워크 중심<br>
+      <strong>채널별 전환율 추적 필수</strong> (UTM / 전용 링크 기반)
+    </div>
+    <div class="kpi-nums">
+      <div>
+        <span class="kpi-current" id="val-inflow_p">0</span><span class="kpi-current"><span class="unit">명</span></span>
+      </div>
+      <div style="text-align:right">
+        <div class="kpi-pct" id="pct-inflow_p">0%</div>
+        <div class="kpi-target">목표 <strong>100명</strong></div>
+      </div>
+    </div>
+    <div class="progress-bar-wrap" style="margin-top:10px">
+      <div class="progress-bar" id="bar-inflow_p" style="width:0%"></div>
+    </div>
+  </div>
+
+  <!-- P2: 오픈채팅 참여자 수 -->
+  <div class="kpi-card">
+    <button class="edit-btn" onclick="openModal('chat_join')">수정 ✦</button>
+    <div class="kpi-top">
+      <span class="kpi-tag">참여</span>
+      <div>
+        <div class="kpi-title">오픈채팅 참여자 수</div>
+      </div>
+    </div>
+    <div class="kpi-desc">액티브 사용자 기준 5배 규모 목표</div>
+    <div class="kpi-nums">
+      <div>
+        <span class="kpi-current" id="val-chat_join">0</span><span class="kpi-current"><span class="unit">명</span></span>
+      </div>
+      <div style="text-align:right">
+        <div class="kpi-pct" id="pct-chat_join">0%</div>
+        <div class="kpi-target">목표 <strong>20명</strong></div>
+      </div>
+    </div>
+    <div class="progress-bar-wrap" style="margin-top:10px">
+      <div class="progress-bar" id="bar-chat_join" style="width:0%"></div>
+    </div>
+  </div>
+
+  <!-- P3: 오픈채팅 메시지 수 -->
+  <div class="kpi-card">
+    <button class="edit-btn" onclick="openModal('messages')">수정 ✦</button>
+    <div class="kpi-top">
+      <span class="kpi-tag">대화</span>
+      <div>
+        <div class="kpi-title">오픈채팅 메시지 수</div>
+      </div>
+    </div>
+    <div class="kpi-desc">질문–경험 공유–답변 루프 형성 최소 규모</div>
+
+    <div class="dist-note">메시지 발신자 3명 이상 &amp; 질문-답변 쌍 10건 이상</div>
+
+    <div class="kpi-nums" style="margin-top:12px">
+      <div>
+        <span class="kpi-current" id="val-messages">0</span><span class="kpi-current"><span class="unit">건</span></span>
+      </div>
+      <div style="text-align:right">
+        <div class="kpi-pct" id="pct-messages">0%</div>
+        <div class="kpi-target">목표 <strong>50건</strong></div>
+      </div>
+    </div>
+    <div class="progress-bar-wrap" style="margin-top:10px">
+      <div class="progress-bar" id="bar-messages" style="width:0%"></div>
+    </div>
+
+    <div class="sub-metrics">
+      <div class="sub-metric">
+        <div class="sub-label">발신자 수</div>
+        <div class="sub-val"><span id="val-msg_senders">0</span><span class="sub-unit">명</span></div>
+        <div class="sub-target">목표 3명 이상</div>
+      </div>
+      <div class="sub-metric">
+        <div class="sub-label">질문-답변 쌍</div>
+        <div class="sub-val"><span id="val-qa_pairs">0</span><span class="sub-unit">건</span></div>
+        <div class="sub-target">목표 10건 이상</div>
       </div>
     </div>
   </div>
 
-</div><!-- /primary grid -->
+  <!-- P4: 액티브 사용자 -->
+  <div class="kpi-card">
+    <button class="edit-btn" onclick="openModal('active')">수정 ✦</button>
+    <div class="kpi-top">
+      <span class="kpi-tag">액티브</span>
+      <div>
+        <div class="kpi-title">오픈채팅 액티브 사용자</div>
+      </div>
+    </div>
+    <div class="kpi-desc">초기 커뮤니티 대화 루프 형성: 3–5명 Active user 필요</div>
+    <div class="kpi-nums">
+      <div>
+        <span class="kpi-current" id="val-active">0</span><span class="kpi-current"><span class="unit">명</span></span>
+      </div>
+      <div style="text-align:right">
+        <div class="kpi-pct" id="pct-active">0%</div>
+        <div class="kpi-target">목표 <strong>4명</strong></div>
+      </div>
+    </div>
+    <div class="progress-bar-wrap" style="margin-top:10px">
+      <div class="progress-bar" id="bar-active" style="width:0%"></div>
+    </div>
+    <div class="sub-metrics">
+      <div class="sub-metric">
+        <div class="sub-label">라이트 — 30일 내 메시지 1건+</div>
+        <div class="sub-val"><span id="val-light_active">0</span><span class="sub-unit">명</span></div>
+      </div>
+      <div class="sub-metric">
+        <div class="sub-label">코어 — 메시지 5건+ &amp; 반응</div>
+        <div class="sub-val"><span id="val-core_active">0</span><span class="sub-unit">명</span></div>
+      </div>
+    </div>
+  </div>
 
-<hr class="divider">
+  <!-- NEW: 채널별 유입 전환율 -->
+  <div class="kpi-card new-card">
+    <span class="new-tag">NEW</span>
+    <div class="kpi-top">
+      <span class="kpi-tag tag-blue">유입경로</span>
+      <div>
+        <div class="kpi-title">채널별 유입 → 오픈채팅 전환율</div>
+      </div>
+    </div>
+    <div class="kpi-desc">
+      유입 경로 데이터 없이는 "검사결과지 설명이 hooking 역할을 했는지" 알 수 없음<br>
+      UTM / 전용 링크 / QR코드별로 전환율을 채널마다 측정
+    </div>
+    <div class="funnel-table">
+      <div class="funnel-row">
+        <div class="funnel-step" style="background:#eff6ff;color:var(--blue)">유튜버</div>
+        <div class="funnel-name">암튜버 채널 유입</div>
+        <div class="funnel-val" id="ch-youtube">–</div>
+        <span class="funnel-rate tbd" id="rate-youtube">측정중</span>
+      </div>
+      <div class="funnel-row">
+        <div class="funnel-step" style="background:#f0fdf4;color:#16a34a">카페</div>
+        <div class="funnel-name">네이버 카페 배너</div>
+        <div class="funnel-val" id="ch-cafe">–</div>
+        <span class="funnel-rate tbd" id="rate-cafe">측정중</span>
+      </div>
+      <div class="funnel-row">
+        <div class="funnel-step" style="background:#fef9c3;color:#b45309">QR</div>
+        <div class="funnel-name">QR 코드</div>
+        <div class="funnel-val" id="ch-qr">–</div>
+        <span class="funnel-rate tbd" id="rate-qr">측정중</span>
+      </div>
+      <div class="funnel-row">
+        <div class="funnel-step" style="background:#f5f3ff;color:#7c3aed">직접</div>
+        <div class="funnel-name">직접 유입 / 기타</div>
+        <div class="funnel-val" id="ch-direct">–</div>
+        <span class="funnel-rate tbd" id="rate-direct">측정중</span>
+      </div>
+    </div>
+  </div>
 
-<!-- ══ SECONDARY KPI ══ -->
-<div class="section-header secondary-header">
-  <span class="section-tag secondary">Secondary KPI</span>
-  <div class="section-divider"></div>
-  <div class="section-question">
-    <div class="section-question-mark">?</div>
-    <span class="section-question-text"><em>검사결과지 설명이 Hooking이 되는가?</em></span>
+  <hr class="section-divider" />
+
+  <!-- ════════════════════════════════
+       SECONDARY KPI
+  ════════════════════════════════ -->
+  <div class="section-header">
+    <span class="section-badge badge-secondary">Secondary KPI</span>
+    <span class="section-question">검사결과지 설명이 Hooking이 되는가?</span>
+  </div>
+
+  <!-- S1: 핑크케어 유입 -->
+  <div class="kpi-card">
+    <button class="edit-btn" onclick="openModal('inflow_s')">수정 ✦</button>
+    <div class="kpi-top">
+      <span class="kpi-tag tag-dark">유입</span>
+      <div>
+        <div class="kpi-title">핑크케어 유입</div>
+      </div>
+    </div>
+    <div class="kpi-desc">Secondary KPI 기준 유입 수</div>
+    <div class="kpi-nums">
+      <div>
+        <span class="kpi-current" id="val-inflow_s">0</span><span class="kpi-current"><span class="unit">명</span></span>
+      </div>
+      <div style="text-align:right">
+        <div class="kpi-pct" id="pct-inflow_s">0%</div>
+        <div class="kpi-target">목표 <strong>100명</strong></div>
+      </div>
+    </div>
+    <div class="progress-bar-wrap" style="margin-top:10px">
+      <div class="progress-bar bar-blue" id="bar-inflow_s" style="width:0%"></div>
+    </div>
+  </div>
+
+  <!-- S2: 검사기록 업로드 -->
+  <div class="kpi-card">
+    <button class="edit-btn" onclick="openModal('upload')">수정 ✦</button>
+    <div class="kpi-top">
+      <span class="kpi-tag tag-dark">전환</span>
+      <div>
+        <div class="kpi-title">검사기록 업로드</div>
+      </div>
+    </div>
+    <div class="kpi-desc">
+      절대값 + 퍼널별 전환율 병행 측정<br>
+      전체 유입 기준 10% 목표 · 오픈채팅 참여자 기준 전환율 별도 추적
+    </div>
+    <div class="kpi-nums">
+      <div>
+        <span class="kpi-current" id="val-upload">0</span><span class="kpi-current"><span class="unit">명</span></span>
+      </div>
+      <div style="text-align:right">
+        <div class="kpi-pct" id="pct-upload">0%</div>
+        <div class="kpi-target">목표 <strong>10명</strong></div>
+      </div>
+    </div>
+    <div class="progress-bar-wrap" style="margin-top:10px">
+      <div class="progress-bar bar-blue" id="bar-upload" style="width:0%"></div>
+    </div>
+
+    <!-- 퍼널 전환율 -->
+    <div class="funnel-table">
+      <div class="funnel-row">
+        <div class="funnel-step" style="background:#f1f5f9;color:#475569">①</div>
+        <div class="funnel-name">핑크케어 유입</div>
+        <div class="funnel-val" id="funnel-inflow">0<span style="font-size:11px;color:#999">명</span></div>
+        <span class="funnel-rate rate-pink">—</span>
+      </div>
+      <div class="funnel-row">
+        <div class="funnel-step" style="background:#eff6ff;color:var(--blue)">②</div>
+        <div class="funnel-name">결과지 업로드</div>
+        <div class="funnel-val" id="funnel-upload">0<span style="font-size:11px;color:#999">명</span></div>
+        <span class="funnel-rate rate-blue" id="conv-upload-total">0%</span>
+      </div>
+      <div class="funnel-row">
+        <div class="funnel-step" style="background:#f0fdfa;color:var(--teal)">③</div>
+        <div class="funnel-name">오픈채팅 참여자 중 업로드</div>
+        <div class="funnel-val" id="funnel-chat-upload">–</div>
+        <span class="funnel-rate rate-teal" id="conv-chat-upload">–</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- S3: 오픈채팅 유입 (결과지 경유) -->
+  <div class="kpi-card">
+    <button class="edit-btn" onclick="openModal('chat_from_result')">수정 ✦</button>
+    <div class="kpi-top">
+      <span class="kpi-tag tag-dark">연결</span>
+      <div>
+        <div class="kpi-title">오픈채팅 유입 (결과지 경유)</div>
+      </div>
+    </div>
+    <div class="kpi-desc">
+      검사결과지 설명 페이지 방문자 중 오픈채팅 유입 비율<br>
+      절대값 + 전환율 병기 — 검사결과지 → 커뮤니티 참여 인과관계 검증
+    </div>
+    <div class="kpi-nums">
+      <div>
+        <span class="kpi-current" id="val-chat_from_result">0</span><span class="kpi-current"><span class="unit">명</span></span>
+      </div>
+      <div style="text-align:right">
+        <div class="kpi-pct" id="pct-chat_from_result">0%</div>
+        <div class="kpi-target">목표 <strong>10명</strong></div>
+      </div>
+    </div>
+    <div class="progress-bar-wrap" style="margin-top:10px">
+      <div class="progress-bar bar-blue" id="bar-chat_from_result" style="width:0%"></div>
+    </div>
+  </div>
+
+  <!-- NEW: 콘텐츠 퀄리티 지표 -->
+  <div class="kpi-card new-card">
+    <span class="new-tag">NEW</span>
+    <div class="kpi-top">
+      <span class="kpi-tag tag-teal">퀄리티</span>
+      <div>
+        <div class="kpi-title">콘텐츠 퀄리티 지표</div>
+      </div>
+    </div>
+    <div class="kpi-desc">
+      유입 지표만으로는 검증 불가 — 답변 속도·만족도로 서비스 핵심 가치 측정
+    </div>
+
+    <div style="border-top:1px solid var(--gray-border);padding-top:12px;margin-top:4px">
+      <div class="quality-row">
+        <div>
+          <div class="q-label">⏱ 답변 리드타임</div>
+          <div class="q-sub">검사기록 업로드 → 에이아이트릭스 전문가 답변 등록까지</div>
+        </div>
+        <div>
+          <span class="q-target">목표 24h 이내</span>
+          <div style="font-size:12px;font-weight:700;color:var(--dark);margin-top:4px;text-align:right">
+            <span id="val-lead_time">–</span>
+          </div>
+        </div>
+      </div>
+      <div class="quality-row">
+        <div>
+          <div class="q-label">⭐ 답변 만족도</div>
+          <div class="q-sub">답변 후 사용자 이모지 반응 수 or 별점 (측정 기준 수립 필요)</div>
+        </div>
+        <div>
+          <span class="q-target" style="background:#eff6ff;color:var(--blue)">기준 수립중</span>
+          <div style="font-size:12px;font-weight:700;color:var(--dark);margin-top:4px;text-align:right">
+            <span id="val-satisfaction">–</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-update" id="last-update">마지막 업데이트: –</div>
+</main>
+
+<!-- Modal -->
+<div class="modal-backdrop" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <h3 id="modal-title">수치 수정</h3>
+    <p>현재 수치를 입력하세요</p>
+    <input type="number" id="modal-input" placeholder="현재 수치" min="0" />
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">취소</button>
+      <button class="btn-save" onclick="saveModal()">저장</button>
+    </div>
   </div>
 </div>
 
-<div class="grid" id="secondary-grid">
-
-  <!-- 1. 핑크케어 유입 -->
-  <div class="card" data-id="inflow_s" onclick="openModal('inflow_s')">
-    <span class="click-hint">수정 ✦</span>
-    <div class="card-label">유입</div>
-    <div class="card-title">핑크케어 유입</div>
-    <div class="card-note">Secondary KPI 기준 유입 수</div>
-    <div class="metric-row">
-      <div class="metric-current" id="val-inflow_s">0</div>
-      <div class="metric-target">목표 <b>100명</b></div>
-    </div>
-    <div class="progress-track"><div class="progress-fill" id="bar-inflow_s" style="width:0%"></div></div>
-    <div class="status-row">
-      <span id="pct-inflow_s">0%</span>
-      <span class="status-pill" id="pill-inflow_s">–</span>
-    </div>
-  </div>
-
-  <!-- 2. 검사기록 업로드 -->
-  <div class="card" data-id="upload" onclick="openModal('upload')">
-    <span class="click-hint">수정 ✦</span>
-    <div class="card-label">전환</div>
-    <div class="card-title">검사기록 업로드</div>
-    <div class="card-note">유입 대비 전환율 10% 목표</div>
-    <div class="metric-row">
-      <div class="metric-current" id="val-upload">0</div>
-      <div class="metric-target">목표 <b>10명</b></div>
-    </div>
-    <div class="progress-track"><div class="progress-fill" id="bar-upload" style="width:0%"></div></div>
-    <div class="status-row">
-      <span id="pct-upload">0%</span>
-      <span class="status-pill" id="pill-upload">–</span>
-    </div>
-  </div>
-
-  <!-- 3. 오픈채팅 유입 -->
-  <div class="card" data-id="chat_from_result" onclick="openModal('chat_from_result')">
-    <span class="click-hint">수정 ✦</span>
-    <div class="card-label">연결</div>
-    <div class="card-title">오픈채팅 유입 (결과지 경유)</div>
-    <div class="card-note">검사결과지 설명 → 커뮤니티 참여 검증</div>
-    <div class="metric-row">
-      <div class="metric-current" id="val-chat_from_result">0</div>
-      <div class="metric-target">목표 <b>10명</b></div>
-    </div>
-    <div class="progress-track"><div class="progress-fill" id="bar-chat_from_result" style="width:0%"></div></div>
-    <div class="status-row">
-      <span id="pct-chat_from_result">0%</span>
-      <span class="status-pill" id="pill-chat_from_result">–</span>
-    </div>
-  </div>
-
-</div><!-- /secondary grid -->
-
-<div class="footer" id="footer-time">마지막 업데이트: –</div>
-
-<!-- ══ EDIT MODAL ══ -->
-<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
-  <div class="modal" onclick="event.stopPropagation()">
-    <div class="modal-title" id="modal-title">수치 수정</div>
-    <div class="modal-sub" id="modal-sub">현재 수치를 입력하세요</div>
-    <div class="field">
-      <label>현재 수치</label>
-      <input type="number" id="modal-input" min="0" placeholder="0">
-    </div>
-    <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeModalDirect()">취소</button>
-      <button class="btn btn-primary" onclick="saveModal()">저장</button>
-    </div>
-  </div>
-</div>
-
-<!-- ══ SHARE TOAST ══ -->
-<div id="share-toast" style="
-  position:fixed; bottom:32px; left:50%; transform:translateX(-50%) translateY(20px);
-  background:var(--charcoal); color:#fff; padding:10px 22px; border-radius:8px;
-  font-size:13px; font-weight:500; opacity:0; transition:all .25s; pointer-events:none; z-index:200;
-  white-space:nowrap;
-">링크가 복사됐습니다 ✓</div>
+<div class="toast" id="toast">링크가 복사됐습니다 ✓</div>
 
 <script>
-// ── CONFIG ──────────────────────────────────────────────
-const METRICS = {
-  inflow_p:         { label: '핑크케어 유입 (Primary)', target: 100 },
-  chat_join:        { label: '오픈채팅 참여자 수',       target: 20  },
-  active:           { label: '오픈채팅 액티브 사용자',   target: 4   },
-  light_active:     { label: '라이트 액티브',            target: null },
-  core_active:      { label: '코어 액티브',              target: null },
-  messages:         { label: '오픈채팅 메시지 수',       target: 50  },
-  inflow_s:         { label: '핑크케어 유입 (Secondary)',target: 100 },
-  upload:           { label: '검사기록 업로드',          target: 10  },
-  chat_from_result: { label: '오픈채팅 유입 (결과지)',   target: 10  },
-};
+  // ── KPI config ──
+  const KPI = {
+    inflow_p:        { target: 100, unit: '명', label: '핑크케어 유입 (Primary)' },
+    chat_join:       { target: 20,  unit: '명', label: '오픈채팅 참여자' },
+    messages:        { target: 50,  unit: '건', label: '오픈채팅 메시지 수' },
+    active:          { target: 4,   unit: '명', label: '액티브 사용자' },
+    light_active:    { target: null, unit: '명', label: '라이트 액티브' },
+    core_active:     { target: null, unit: '명', label: '코어 액티브' },
+    msg_senders:     { target: 3,   unit: '명', label: '메시지 발신자 수' },
+    qa_pairs:        { target: 10,  unit: '건', label: '질문-답변 쌍' },
+    inflow_s:        { target: 100, unit: '명', label: '핑크케어 유입 (Secondary)' },
+    upload:          { target: 10,  unit: '명', label: '검사기록 업로드' },
+    chat_from_result:{ target: 10,  unit: '명', label: '오픈채팅 유입 (결과지 경유)' },
+  };
 
-const EDIT_PASSWORD = 'pinkcare2025';
+  let state = {};
+  let editingKey = null;
 
-// ── MODE 판별 ─────────────────────────────────────────────
-// ?view=1 파라미터가 있으면 뷰어 모드, 없으면 편집 모드
-const params = new URLSearchParams(window.location.search);
-const IS_VIEW_MODE = params.has('view');
-
-// ── STATE ────────────────────────────────────────────────
-let state = {};
-
-function loadState() {
-  Object.keys(METRICS).forEach(k => state[k] = 0);
-  try {
-    // 데이터는 항상 URL 해시에서 읽기
+  // ── URL params ──
+  function loadFromURL() {
+    const params = new URLSearchParams(window.location.search);
     const hash = window.location.hash.slice(1);
-    if (hash) {
-      hash.split('&').forEach(pair => {
-        const [k, v] = pair.split('=');
-        if (k && METRICS[k] !== undefined) state[k] = parseInt(v, 10) || 0;
-      });
-    }
-  } catch(e) {}
-}
-
-function saveState() {
-  const hash = Object.keys(state).map(k => `${k}=${state[k]}`).join('&');
-  history.replaceState(null, '', (IS_VIEW_MODE ? '?view=1' : '') + '#' + hash);
-  updateFooter();
-}
-
-function buildShareUrl() {
-  const hash = Object.keys(state).map(k => `${k}=${state[k]}`).join('&');
-  const base = window.location.href.split('?')[0].split('#')[0];
-  return `${base}?view=1#${hash}`;
-}
-
-// ── UI 모드 적용 ──────────────────────────────────────────
-function applyMode() {
-  const actions = document.getElementById('header-actions');
-
-  if (IS_VIEW_MODE) {
-    // 뷰어 모드: 카드 클릭 불가, 수정 힌트 숨김, 뷰어 배지 표시
-    document.querySelectorAll('.card').forEach(c => {
-      c.style.cursor = 'default';
-      c.onclick = null;
+    const hashParams = new URLSearchParams(hash.replace(/&/g, '&'));
+    Object.keys(KPI).forEach(k => {
+      const v = params.get(k) ?? hashParams.get(k);
+      state[k] = v !== null ? parseInt(v) : 0;
     });
-    document.querySelectorAll('.sub-card').forEach(c => {
-      c.style.cursor = 'default';
-      c.onclick = null;
-    });
-    document.querySelectorAll('.click-hint').forEach(el => el.style.display = 'none');
-
-    actions.innerHTML = `
-      <span style="font-size:11px; color:var(--gray-text); font-weight:500; padding:7px 12px;
-        background:var(--bg); border:1px solid var(--line); border-radius:6px;">
-        👁 보기 전용
-      </span>`;
-  } else {
-    // 편집 모드: 공유 링크 버튼 표시
-    actions.innerHTML = `
-      <button onclick="copyShareLink()" style="
-        background:var(--blue-accent); color:#fff; border:none; border-radius:6px;
-        padding:7px 16px; font-family:'Inter',sans-serif; font-size:12px; font-weight:600;
-        cursor:pointer; display:flex; align-items:center; gap:6px; white-space:nowrap;">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
-        보고용 링크 복사
-      </button>`;
   }
-}
 
-// ── SHARE ─────────────────────────────────────────────────
-function copyShareLink() {
-  const url = buildShareUrl();
-  navigator.clipboard.writeText(url).then(() => {
-    const toast = document.getElementById('share-toast');
-    toast.style.opacity = '1';
-    toast.style.transform = 'translateX(-50%) translateY(0)';
-    setTimeout(() => {
-      toast.style.opacity = '0';
-      toast.style.transform = 'translateX(-50%) translateY(20px)';
-    }, 2400);
-  });
-}
+  function buildURL() {
+    const base = window.location.origin + window.location.pathname;
+    const parts = Object.keys(KPI).map(k => `${k}=${state[k] || 0}`).join('&');
+    return `${base}?view=1#${parts}`;
+  }
 
-// ── RENDER ───────────────────────────────────────────────
-function getStatus(pct) {
-  if (pct >= 100) return ['achieved', '달성 ✓'];
-  if (pct >= 60)  return ['on-track', 'On Track'];
-  if (pct >= 30)  return ['at-risk', 'At Risk'];
-  return ['critical', 'Critical'];
-}
+  // ── Render ──
+  function render() {
+    Object.keys(KPI).forEach(k => {
+      const val = state[k] || 0;
+      const el = document.getElementById('val-' + k);
+      if (el) el.textContent = val;
 
-function renderAll() {
-  Object.keys(METRICS).forEach(id => {
-    const m = METRICS[id];
-    const val = state[id] || 0;
-    const el = document.getElementById('val-' + id);
-    if (el) el.textContent = val.toLocaleString();
-    if (m.target !== null) {
-      const pct = Math.min(Math.round(val / m.target * 100), 100);
-      const barEl = document.getElementById('bar-' + id);
-      const pctEl = document.getElementById('pct-' + id);
-      const pillEl = document.getElementById('pill-' + id);
-      if (barEl) barEl.style.width = pct + '%';
+      const cfg = KPI[k];
+      if (!cfg.target) return;
+
+      const pct = Math.min(Math.round(val / cfg.target * 100), 100);
+      const pctEl = document.getElementById('pct-' + k);
+      const barEl = document.getElementById('bar-' + k);
       if (pctEl) pctEl.textContent = pct + '%';
-      if (pillEl) {
-        const [cls, txt] = getStatus(pct);
-        pillEl.className = 'status-pill ' + cls;
-        pillEl.textContent = txt;
-      }
+      if (barEl) barEl.style.width = pct + '%';
+    });
+
+    // Funnel: upload conversion rates
+    const inflow = state['inflow_s'] || 0;
+    const upload = state['upload'] || 0;
+    const chatJoin = state['chat_join'] || 0;
+    const chatUpload = state['chat_from_result'] || 0;
+
+    const fi = document.getElementById('funnel-inflow');
+    const fu = document.getElementById('funnel-upload');
+    if (fi) fi.innerHTML = inflow + '<span style="font-size:11px;color:#999">명</span>';
+    if (fu) fu.innerHTML = upload + '<span style="font-size:11px;color:#999">명</span>';
+
+    const convTotal = document.getElementById('conv-upload-total');
+    if (convTotal) {
+      convTotal.textContent = inflow > 0 ? Math.round(upload/inflow*100) + '%' : '–';
     }
-  });
-}
+    const convChat = document.getElementById('conv-chat-upload');
+    const fcu = document.getElementById('funnel-chat-upload');
+    if (fcu) fcu.innerHTML = chatUpload > 0 ? chatUpload + '<span style="font-size:11px;color:#999">명</span>' : '–';
+    if (convChat) {
+      convChat.textContent = chatJoin > 0 && chatUpload > 0 ? Math.round(chatUpload/chatJoin*100) + '%' : '–';
+    }
 
-function updateFooter() {
-  const now = new Date();
-  const fmt = now.toLocaleDateString('ko-KR', { year:'numeric', month:'long', day:'numeric' })
-    + ' ' + now.toLocaleTimeString('ko-KR', { hour:'2-digit', minute:'2-digit' });
-  document.getElementById('footer-time').textContent = '마지막 업데이트: ' + fmt;
-}
-
-// ── MODAL (편집 모드 전용) ────────────────────────────────
-let currentId = null;
-
-function openModal(id) {
-  if (IS_VIEW_MODE) return;
-  currentId = id;
-  const m = METRICS[id];
-  document.getElementById('modal-title').textContent = m.label;
-  document.getElementById('modal-sub').textContent =
-    m.target ? `목표: ${m.target.toLocaleString()}` : '현재 수치를 입력하세요';
-  document.getElementById('modal-input').value = state[id] || 0;
-  document.getElementById('modal-overlay').classList.add('open');
-  setTimeout(() => document.getElementById('modal-input').focus(), 100);
-}
-
-function closeModal(e) {
-  if (e.target === document.getElementById('modal-overlay')) closeModalDirect();
-}
-function closeModalDirect() {
-  document.getElementById('modal-overlay').classList.remove('open');
-  currentId = null;
-}
-
-function saveModal() {
-  if (!currentId) return;
-  const val = parseInt(document.getElementById('modal-input').value, 10);
-  if (!isNaN(val) && val >= 0) {
-    state[currentId] = val;
-    saveState();
-    renderAll();
+    // last update
+    const lu = document.getElementById('last-update');
+    const now = new Date();
+    const fmt = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+    if (lu) lu.textContent = '마지막 업데이트: ' + fmt;
   }
-  closeModalDirect();
-}
 
-document.getElementById('modal-input').addEventListener('keydown', e => {
-  if (e.key === 'Enter') saveModal();
-  if (e.key === 'Escape') closeModalDirect();
-});
+  // ── Modal ──
+  function openModal(key) {
+    editingKey = key;
+    const cfg = KPI[key];
+    if (!cfg) return;
+    document.getElementById('modal-title').textContent = cfg.label + ' 수정';
+    document.getElementById('modal-input').value = state[key] || 0;
+    document.getElementById('modal').classList.add('open');
+    document.getElementById('modal-input').focus();
+    document.getElementById('modal-input').select();
+  }
+  function closeModal() {
+    document.getElementById('modal').classList.remove('open');
+    editingKey = null;
+  }
+  function saveModal() {
+    if (!editingKey) return;
+    const v = parseInt(document.getElementById('modal-input').value) || 0;
+    state[editingKey] = v;
+    render();
+    closeModal();
+    // copy shareable URL
+    const url = buildURL();
+    navigator.clipboard.writeText(url).catch(() => {});
+    showToast();
+    history.replaceState(null, '', url);
+  }
+  document.getElementById('modal-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') saveModal();
+    if (e.key === 'Escape') closeModal();
+  });
 
-// ── INIT ─────────────────────────────────────────────────
-loadState();
-applyMode();
-renderAll();
-if (window.location.hash) updateFooter();
+  // ── Toast ──
+  function showToast() {
+    const t = document.getElementById('toast');
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2000);
+  }
+
+  // ── Init ──
+  loadFromURL();
+  render();
 </script>
 </body>
 </html>
