@@ -194,6 +194,43 @@
       transition: all 0.15s;
     }
     .edit-btn:hover { background: var(--pink-light); color: var(--pink); border-color: var(--pink-mid); }
+    /* ── Share button ── */
+    .share-btn {
+      margin-left: auto;
+      font-size: 11px;
+      font-weight: 600;
+      color: white;
+      background: var(--pink);
+      border: none;
+      border-radius: 20px;
+      padding: 5px 12px;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .share-btn:hover { opacity: 0.85; }
+    .view-only-badge {
+      display: none;
+      margin-left: auto;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--teal);
+      background: #f0fdfa;
+      border: 1px solid #99f6e4;
+      border-radius: 20px;
+      padding: 4px 10px;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+    /* view mode: hide edit controls */
+    body.view-mode .edit-btn { display: none; }
+    body.view-mode .share-btn { display: none; }
+    body.view-mode .view-only-badge { display: flex; }
+    body.view-mode .sub-metric.edit-sub { cursor: default; }
+    body.view-mode .sub-metric.edit-sub:hover { background: var(--gray-bg); border-color: transparent; }
+    body.view-mode .sub-edit-hint { display: none !important; }
     /* ── Sub metrics ── */
     .sub-metrics {
       border-top: 1px solid var(--gray-border);
@@ -207,9 +244,26 @@
       background: var(--gray-bg);
       border-radius: 6px;
       padding: 6px 8px;
+      border: 1px solid transparent;
     }
     .sub-metric.full-width { grid-column: 1 / -1; }
-    .sub-label { font-size: 10px; color: var(--gray-text); margin-bottom: 2px; }
+    .sub-metric.edit-sub {
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .sub-metric.edit-sub:hover {
+      background: var(--pink-light);
+      border-color: var(--pink-mid);
+    }
+    .sub-label {
+      font-size: 10px; color: var(--gray-text); margin-bottom: 2px;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .sub-edit-hint {
+      font-size: 9px; color: var(--pink); opacity: 0;
+      transition: opacity 0.15s;
+    }
+    .sub-metric.edit-sub:hover .sub-edit-hint { opacity: 1; }
     .sub-val { font-size: 14px; font-weight: 700; color: var(--dark); }
     .sub-val .sub-unit { font-size: 10px; font-weight: 400; color: var(--gray-text); }
     .sub-target { font-size: 10px; color: var(--gray-text); margin-top: 1px; }
@@ -350,6 +404,8 @@
   <div class="logo-dot"></div>
   <h1>핑크케어 <span>KPI</span></h1>
   <span class="header-meta">30일 · PoC 단계</span>
+  <button class="share-btn" onclick="copyViewLink()">👁 보기용 링크 공유</button>
+  <span class="view-only-badge">👁 보기 전용</span>
 </header>
 <main>
   <!-- ════════════════════════════════
@@ -431,13 +487,13 @@
       <div class="progress-bar" id="bar-messages" style="width:0%"></div>
     </div>
     <div class="sub-metrics">
-      <div class="sub-metric">
-        <div class="sub-label">발신자 수</div>
+      <div class="sub-metric edit-sub" onclick="openModal('msg_senders')">
+        <div class="sub-label">발신자 수 <span class="sub-edit-hint">✎ 수정</span></div>
         <div class="sub-val"><span id="val-msg_senders">0</span><span class="sub-unit">명</span></div>
         <div class="sub-target">목표 3명 이상</div>
       </div>
-      <div class="sub-metric">
-        <div class="sub-label">질문-답변 쌍</div>
+      <div class="sub-metric edit-sub" onclick="openModal('qa_pairs')">
+        <div class="sub-label">질문-답변 쌍 <span class="sub-edit-hint">✎ 수정</span></div>
         <div class="sub-val"><span id="val-qa_pairs">0</span><span class="sub-unit">건</span></div>
         <div class="sub-target">목표 10건 이상</div>
       </div>
@@ -466,12 +522,12 @@
       <div class="progress-bar" id="bar-active" style="width:0%"></div>
     </div>
     <div class="sub-metrics">
-      <div class="sub-metric">
-        <div class="sub-label">라이트 — 30일 내 메시지 1건+</div>
+      <div class="sub-metric edit-sub" onclick="openModal('light_active')">
+        <div class="sub-label">라이트 — 메시지 1건+ <span class="sub-edit-hint">✎ 수정</span></div>
         <div class="sub-val"><span id="val-light_active">0</span><span class="sub-unit">명</span></div>
       </div>
-      <div class="sub-metric">
-        <div class="sub-label">코어 — 메시지 5건+ &amp; 반응</div>
+      <div class="sub-metric edit-sub" onclick="openModal('core_active')">
+        <div class="sub-label">코어 — 메시지 5건+ &amp; 반응 <span class="sub-edit-hint">✎ 수정</span></div>
         <div class="sub-val"><span id="val-core_active">0</span><span class="sub-unit">명</span></div>
       </div>
     </div>
@@ -673,7 +729,7 @@
     </div>
   </div>
 </div>
-<div class="toast" id="toast">링크가 복사됐습니다 ✓</div>
+<div class="toast" id="toast"></div>
 <script>
   // ── KPI config ──
   const KPI = {
@@ -691,21 +747,27 @@
   };
   let state = {};
   let editingKey = null;
+  const isViewMode = new URLSearchParams(window.location.search).get('view') === '1';
   // ── URL params ──
   function loadFromURL() {
-    const params = new URLSearchParams(window.location.search);
-    // support ?view=1#key=val format
     const hash = window.location.hash.slice(1);
-    const hashParams = new URLSearchParams(hash.replace(/&/g, '&'));
+    const hashParams = new URLSearchParams(hash);
     Object.keys(KPI).forEach(k => {
-      const v = params.get(k) ?? hashParams.get(k);
+      const v = hashParams.get(k);
       state[k] = v !== null ? parseInt(v) : 0;
     });
   }
-  function buildURL() {
+  function buildEditHash() {
+    return Object.keys(KPI).map(k => `${k}=${state[k] || 0}`).join('&');
+  }
+  function buildViewURL() {
     const base = window.location.origin + window.location.pathname;
-    const parts = Object.keys(KPI).map(k => `${k}=${state[k] || 0}`).join('&');
-    return `${base}?view=1#${parts}`;
+    return `${base}?view=1#${buildEditHash()}`;
+  }
+  function copyViewLink() {
+    const url = buildViewURL();
+    navigator.clipboard.writeText(url).catch(() => {});
+    showToast('보기용 링크가 복사됐습니다 ✓');
   }
   // ── Render ──
   function render() {
@@ -767,25 +829,23 @@
     state[editingKey] = v;
     render();
     closeModal();
-    // copy shareable URL
-    const url = buildURL();
-    navigator.clipboard.writeText(url).catch(() => {});
-    showToast();
-    history.replaceState(null, '', url);
+    history.replaceState(null, '', '#' + buildEditHash());
   }
   document.getElementById('modal-input').addEventListener('keydown', e => {
     if (e.key === 'Enter') saveModal();
     if (e.key === 'Escape') closeModal();
   });
   // ── Toast ──
-  function showToast() {
+  function showToast(msg) {
     const t = document.getElementById('toast');
+    t.textContent = msg || '저장됐습니다 ✓';
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 2000);
   }
   // ── Init ──
   loadFromURL();
   render();
+  if (isViewMode) document.body.classList.add('view-mode');
 </script>
 </body>
 </html>
