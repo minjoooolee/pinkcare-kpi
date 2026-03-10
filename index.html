@@ -19,9 +19,7 @@
       --blue: #1d4ed8;
       --teal: #0891b2;
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
       font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', -apple-system, sans-serif;
       background: var(--gray-bg);
@@ -29,12 +27,11 @@
       min-height: 100vh;
       padding-bottom: 60px;
     }
-
     /* ── Header ── */
     header {
       background: white;
       border-bottom: 1px solid var(--gray-border);
-      padding: 18px 24px 14px;
+      padding: 12px 18px 10px;
       position: sticky;
       top: 0;
       z-index: 100;
@@ -64,204 +61,193 @@
       border-radius: 20px;
       border: 1px solid var(--gray-border);
     }
-
     /* ── Main ── */
-    main { max-width: 720px; margin: 0 auto; padding: 24px 16px; }
-
+    main { max-width: 560px; margin: 0 auto; padding: 16px 14px; }
     /* ── Section label ── */
     .section-header {
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin-bottom: 14px;
+      gap: 8px;
+      margin-bottom: 8px;
     }
     .section-badge {
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
       letter-spacing: 0.5px;
-      padding: 4px 10px;
+      padding: 3px 8px;
       border-radius: 20px;
       text-transform: uppercase;
     }
     .badge-primary { background: var(--pink); color: white; }
     .badge-secondary { background: var(--dark); color: white; }
     .section-question {
-      font-size: 13px;
+      font-size: 12px;
       color: var(--gray-text);
       font-style: italic;
     }
-    .section-divider { border: none; border-top: 2px solid var(--gray-border); margin: 32px 0 24px; }
-
+    .section-divider { border: none; border-top: 1px solid var(--gray-border); margin: 18px 0 14px; }
     /* ── KPI Card ── */
     .kpi-card {
       background: white;
       border: 1px solid var(--gray-border);
-      border-radius: 14px;
-      padding: 18px 20px;
-      margin-bottom: 12px;
+      border-radius: 10px;
+      padding: 11px 13px;
+      margin-bottom: 6px;
       position: relative;
       transition: box-shadow 0.2s;
     }
-    .kpi-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+    .kpi-card:hover { box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
     .kpi-card.new-card {
       border-color: var(--pink-mid);
       background: linear-gradient(135deg, #fff 0%, #eff6ff 100%);
     }
     .new-tag {
       position: absolute;
-      top: 14px; right: 14px;
-      font-size: 10px;
+      top: 10px; right: 10px;
+      font-size: 9px;
       font-weight: 700;
       background: var(--pink);
       color: white;
-      padding: 2px 8px;
-      border-radius: 10px;
+      padding: 2px 6px;
+      border-radius: 8px;
       letter-spacing: 0.3px;
     }
-
     .kpi-top {
       display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      margin-bottom: 10px;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 5px;
     }
     .kpi-tag {
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 700;
-      padding: 3px 8px;
-      border-radius: 6px;
+      padding: 2px 6px;
+      border-radius: 4px;
       background: var(--pink-light);
       color: var(--pink);
       flex-shrink: 0;
-      margin-top: 2px;
       letter-spacing: 0.3px;
     }
     .kpi-tag.tag-blue { background: #eff6ff; color: var(--blue); }
     .kpi-tag.tag-teal { background: #f0fdfa; color: var(--teal); }
     .kpi-tag.tag-yellow { background: #fffbeb; color: var(--yellow); }
     .kpi-tag.tag-dark { background: #f1f1f5; color: #555; }
-
-    .kpi-title { font-size: 14px; font-weight: 700; line-height: 1.4; }
+    .kpi-title { font-size: 13px; font-weight: 700; line-height: 1.3; }
     .kpi-desc {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--gray-text);
-      margin-bottom: 14px;
-      line-height: 1.6;
+      margin-bottom: 8px;
+      line-height: 1.5;
     }
-
     /* ── Progress ── */
     .kpi-progress {
       display: flex;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 8px;
+      gap: 8px;
+      margin-bottom: 5px;
     }
     .progress-bar-wrap {
       flex: 1;
-      height: 8px;
+      height: 5px;
       background: var(--gray-bg);
-      border-radius: 4px;
+      border-radius: 3px;
       overflow: hidden;
     }
     .progress-bar {
       height: 100%;
-      border-radius: 4px;
+      border-radius: 3px;
       background: var(--pink);
       transition: width 0.6s ease;
     }
     .progress-bar.bar-blue { background: var(--blue); }
     .progress-bar.bar-teal { background: var(--teal); }
     .progress-bar.bar-yellow { background: var(--yellow); }
-
     .kpi-nums {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
     }
     .kpi-current {
-      font-size: 26px;
+      font-size: 22px;
       font-weight: 800;
       color: var(--dark);
       letter-spacing: -1px;
       line-height: 1;
     }
-    .kpi-current .unit { font-size: 14px; font-weight: 500; color: var(--gray-text); margin-left: 2px; }
-    .kpi-target { font-size: 12px; color: var(--gray-text); }
+    .kpi-current .unit { font-size: 12px; font-weight: 500; color: var(--gray-text); margin-left: 1px; }
+    .kpi-target { font-size: 11px; color: var(--gray-text); }
     .kpi-pct {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
       color: var(--pink);
     }
     .edit-btn {
       position: absolute;
-      top: 14px; right: 14px;
-      font-size: 11px;
+      top: 10px; right: 10px;
+      font-size: 10px;
       color: var(--gray-text);
       background: var(--gray-bg);
       border: 1px solid var(--gray-border);
-      border-radius: 6px;
-      padding: 3px 8px;
+      border-radius: 5px;
+      padding: 2px 7px;
       cursor: pointer;
       transition: all 0.15s;
     }
     .edit-btn:hover { background: var(--pink-light); color: var(--pink); border-color: var(--pink-mid); }
-
     /* ── Sub metrics ── */
     .sub-metrics {
       border-top: 1px solid var(--gray-border);
-      margin-top: 14px;
-      padding-top: 12px;
+      margin-top: 8px;
+      padding-top: 7px;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 8px;
+      gap: 5px;
     }
     .sub-metric {
       background: var(--gray-bg);
-      border-radius: 8px;
-      padding: 10px 12px;
+      border-radius: 6px;
+      padding: 6px 8px;
     }
     .sub-metric.full-width { grid-column: 1 / -1; }
-    .sub-label { font-size: 11px; color: var(--gray-text); margin-bottom: 4px; }
-    .sub-val { font-size: 16px; font-weight: 700; color: var(--dark); }
-    .sub-val .sub-unit { font-size: 11px; font-weight: 400; color: var(--gray-text); }
-    .sub-target { font-size: 11px; color: var(--gray-text); margin-top: 2px; }
-
+    .sub-label { font-size: 10px; color: var(--gray-text); margin-bottom: 2px; }
+    .sub-val { font-size: 14px; font-weight: 700; color: var(--dark); }
+    .sub-val .sub-unit { font-size: 10px; font-weight: 400; color: var(--gray-text); }
+    .sub-target { font-size: 10px; color: var(--gray-text); margin-top: 1px; }
     /* ── Distribution tag ── */
     .dist-note {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      font-size: 11px;
+      gap: 4px;
+      font-size: 10px;
       color: #7c3aed;
       background: #f5f3ff;
       border: 1px solid #ddd6fe;
-      border-radius: 6px;
-      padding: 4px 9px;
-      margin-top: 8px;
+      border-radius: 5px;
+      padding: 3px 7px;
+      margin-top: 5px;
     }
     .dist-note::before { content: '분포 조건'; font-weight: 700; }
-
     /* ── Funnel table ── */
     .funnel-table {
       border-top: 1px solid var(--gray-border);
-      margin-top: 14px;
-      padding-top: 12px;
+      margin-top: 8px;
+      padding-top: 6px;
     }
     .funnel-row {
       display: flex;
       align-items: center;
-      padding: 7px 0;
+      padding: 5px 0;
       border-bottom: 1px dashed var(--gray-border);
-      font-size: 12px;
-      gap: 8px;
+      font-size: 11px;
+      gap: 6px;
     }
     .funnel-row:last-child { border-bottom: none; }
     .funnel-step {
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 700;
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -270,48 +256,45 @@
       color: var(--pink);
     }
     .funnel-name { flex: 1; font-weight: 500; }
-    .funnel-val { font-weight: 700; color: var(--dark); font-size: 13px; min-width: 32px; text-align: right; }
+    .funnel-val { font-weight: 700; color: var(--dark); font-size: 12px; min-width: 28px; text-align: right; }
     .funnel-rate {
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
-      padding: 2px 7px;
-      border-radius: 10px;
-      min-width: 50px;
+      padding: 2px 6px;
+      border-radius: 8px;
+      min-width: 44px;
       text-align: center;
     }
     .funnel-rate.rate-pink { background: var(--pink-light); color: var(--pink); }
     .funnel-rate.rate-blue { background: #eff6ff; color: var(--blue); }
     .funnel-rate.rate-teal { background: #f0fdfa; color: var(--teal); }
     .funnel-rate.tbd { background: #f1f1f5; color: #999; }
-
     /* ── Quality card ── */
     .quality-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 8px 0;
+      padding: 5px 0;
       border-bottom: 1px dashed var(--gray-border);
     }
     .quality-row:last-child { border-bottom: none; }
-    .q-label { font-size: 12px; font-weight: 500; }
-    .q-sub { font-size: 11px; color: var(--gray-text); margin-top: 2px; }
+    .q-label { font-size: 11px; font-weight: 500; }
+    .q-sub { font-size: 10px; color: var(--gray-text); margin-top: 1px; }
     .q-target {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
       color: var(--teal);
       background: #f0fdfa;
-      padding: 3px 9px;
-      border-radius: 8px;
+      padding: 2px 7px;
+      border-radius: 6px;
     }
-
     /* ── Footer ── */
     .footer-update {
       text-align: center;
-      font-size: 12px;
+      font-size: 11px;
       color: var(--gray-text);
-      margin-top: 24px;
+      margin-top: 14px;
     }
-
     /* ── Modal ── */
     .modal-backdrop {
       display: none;
@@ -324,39 +307,38 @@
     .modal-backdrop.open { display: flex; }
     .modal {
       background: white;
-      border-radius: 16px;
-      padding: 24px;
-      width: 320px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+      border-radius: 12px;
+      padding: 18px;
+      width: 280px;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.18);
     }
-    .modal h3 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
-    .modal p { font-size: 12px; color: var(--gray-text); margin-bottom: 14px; }
+    .modal h3 { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+    .modal p { font-size: 11px; color: var(--gray-text); margin-bottom: 10px; }
     .modal input {
       width: 100%; border: 1.5px solid var(--gray-border);
-      border-radius: 8px; padding: 10px 12px;
-      font-size: 16px; outline: none;
+      border-radius: 7px; padding: 8px 10px;
+      font-size: 15px; outline: none;
       transition: border-color 0.15s;
     }
     .modal input:focus { border-color: var(--pink); }
-    .modal-btns { display: flex; gap: 8px; margin-top: 14px; }
+    .modal-btns { display: flex; gap: 6px; margin-top: 10px; }
     .btn-cancel {
-      flex: 1; padding: 10px; border-radius: 8px;
-      border: 1.5px solid var(--gray-border);
-      background: white; font-size: 13px; cursor: pointer;
+      flex: 1; padding: 8px; border-radius: 7px;
+      border: 1px solid var(--gray-border);
+      background: white; font-size: 12px; cursor: pointer;
     }
     .btn-save {
-      flex: 1; padding: 10px; border-radius: 8px;
+      flex: 1; padding: 8px; border-radius: 7px;
       border: none; background: var(--pink);
-      color: white; font-size: 13px; font-weight: 700; cursor: pointer;
+      color: white; font-size: 12px; font-weight: 700; cursor: pointer;
     }
-
     /* ── Copy toast ── */
     .toast {
-      position: fixed; bottom: 24px; left: 50%;
-      transform: translateX(-50%) translateY(20px);
+      position: fixed; bottom: 20px; left: 50%;
+      transform: translateX(-50%) translateY(16px);
       background: var(--dark); color: white;
-      font-size: 13px; padding: 10px 20px;
-      border-radius: 20px; opacity: 0;
+      font-size: 12px; padding: 8px 16px;
+      border-radius: 16px; opacity: 0;
       transition: all 0.3s; pointer-events: none;
       z-index: 300;
     }
@@ -364,15 +346,12 @@
   </style>
 </head>
 <body>
-
 <header>
   <div class="logo-dot"></div>
   <h1>핑크케어 <span>KPI</span></h1>
   <span class="header-meta">30일 · PoC 단계</span>
 </header>
-
 <main>
-
   <!-- ════════════════════════════════
        PRIMARY KPI
   ════════════════════════════════ -->
@@ -380,7 +359,6 @@
     <span class="section-badge badge-primary">Primary KPI</span>
     <span class="section-question">커뮤니티가 형성될만 한가?</span>
   </div>
-
   <!-- P1: 핑크케어 유입 -->
   <div class="kpi-card">
     <button class="edit-btn" onclick="openModal('inflow_p')">수정 ✦</button>
@@ -402,11 +380,10 @@
         <div class="kpi-target">목표 <strong>100명</strong></div>
       </div>
     </div>
-    <div class="progress-bar-wrap" style="margin-top:10px">
+    <div class="progress-bar-wrap" style="margin-top:6px">
       <div class="progress-bar" id="bar-inflow_p" style="width:0%"></div>
     </div>
   </div>
-
   <!-- P2: 오픈채팅 참여자 수 -->
   <div class="kpi-card">
     <button class="edit-btn" onclick="openModal('chat_join')">수정 ✦</button>
@@ -426,12 +403,11 @@
         <div class="kpi-target">목표 <strong>20명</strong></div>
       </div>
     </div>
-    <div class="progress-bar-wrap" style="margin-top:10px">
+    <div class="progress-bar-wrap" style="margin-top:6px">
       <div class="progress-bar" id="bar-chat_join" style="width:0%"></div>
     </div>
   </div>
-
-  <!-- P3: 오픈채팅 메시지 수 -->
+  <!-- P3: 오픈채팅 메시지 수 ★수정 -->
   <div class="kpi-card">
     <button class="edit-btn" onclick="openModal('messages')">수정 ✦</button>
     <div class="kpi-top">
@@ -441,10 +417,8 @@
       </div>
     </div>
     <div class="kpi-desc">질문–경험 공유–답변 루프 형성 최소 규모</div>
-
     <div class="dist-note">메시지 발신자 3명 이상 &amp; 질문-답변 쌍 10건 이상</div>
-
-    <div class="kpi-nums" style="margin-top:12px">
+    <div class="kpi-nums" style="margin-top:7px">
       <div>
         <span class="kpi-current" id="val-messages">0</span><span class="kpi-current"><span class="unit">건</span></span>
       </div>
@@ -453,10 +427,9 @@
         <div class="kpi-target">목표 <strong>50건</strong></div>
       </div>
     </div>
-    <div class="progress-bar-wrap" style="margin-top:10px">
+    <div class="progress-bar-wrap" style="margin-top:6px">
       <div class="progress-bar" id="bar-messages" style="width:0%"></div>
     </div>
-
     <div class="sub-metrics">
       <div class="sub-metric">
         <div class="sub-label">발신자 수</div>
@@ -470,7 +443,6 @@
       </div>
     </div>
   </div>
-
   <!-- P4: 액티브 사용자 -->
   <div class="kpi-card">
     <button class="edit-btn" onclick="openModal('active')">수정 ✦</button>
@@ -490,7 +462,7 @@
         <div class="kpi-target">목표 <strong>4명</strong></div>
       </div>
     </div>
-    <div class="progress-bar-wrap" style="margin-top:10px">
+    <div class="progress-bar-wrap" style="margin-top:6px">
       <div class="progress-bar" id="bar-active" style="width:0%"></div>
     </div>
     <div class="sub-metrics">
@@ -504,8 +476,7 @@
       </div>
     </div>
   </div>
-
-  <!-- NEW: 채널별 유입 전환율 -->
+  <!-- ── NEW: 채널별 유입 전환율 ── -->
   <div class="kpi-card new-card">
     <span class="new-tag">NEW</span>
     <div class="kpi-top">
@@ -545,9 +516,7 @@
       </div>
     </div>
   </div>
-
   <hr class="section-divider" />
-
   <!-- ════════════════════════════════
        SECONDARY KPI
   ════════════════════════════════ -->
@@ -555,7 +524,6 @@
     <span class="section-badge badge-secondary">Secondary KPI</span>
     <span class="section-question">검사결과지 설명이 Hooking이 되는가?</span>
   </div>
-
   <!-- S1: 핑크케어 유입 -->
   <div class="kpi-card">
     <button class="edit-btn" onclick="openModal('inflow_s')">수정 ✦</button>
@@ -575,12 +543,11 @@
         <div class="kpi-target">목표 <strong>100명</strong></div>
       </div>
     </div>
-    <div class="progress-bar-wrap" style="margin-top:10px">
+    <div class="progress-bar-wrap" style="margin-top:6px">
       <div class="progress-bar bar-blue" id="bar-inflow_s" style="width:0%"></div>
     </div>
   </div>
-
-  <!-- S2: 검사기록 업로드 -->
+  <!-- S2: 검사기록 업로드 ★수정 — 퍼널 전환율 병기 -->
   <div class="kpi-card">
     <button class="edit-btn" onclick="openModal('upload')">수정 ✦</button>
     <div class="kpi-top">
@@ -602,10 +569,9 @@
         <div class="kpi-target">목표 <strong>10명</strong></div>
       </div>
     </div>
-    <div class="progress-bar-wrap" style="margin-top:10px">
+    <div class="progress-bar-wrap" style="margin-top:6px">
       <div class="progress-bar bar-blue" id="bar-upload" style="width:0%"></div>
     </div>
-
     <!-- 퍼널 전환율 -->
     <div class="funnel-table">
       <div class="funnel-row">
@@ -628,8 +594,7 @@
       </div>
     </div>
   </div>
-
-  <!-- S3: 오픈채팅 유입 (결과지 경유) -->
+  <!-- S3: 오픈채팅 유입 (결과지 경유) ★수정 -->
   <div class="kpi-card">
     <button class="edit-btn" onclick="openModal('chat_from_result')">수정 ✦</button>
     <div class="kpi-top">
@@ -651,12 +616,11 @@
         <div class="kpi-target">목표 <strong>10명</strong></div>
       </div>
     </div>
-    <div class="progress-bar-wrap" style="margin-top:10px">
+    <div class="progress-bar-wrap" style="margin-top:6px">
       <div class="progress-bar bar-blue" id="bar-chat_from_result" style="width:0%"></div>
     </div>
   </div>
-
-  <!-- NEW: 콘텐츠 퀄리티 지표 -->
+  <!-- ── NEW: 콘텐츠 퀄리티 지표 ── -->
   <div class="kpi-card new-card">
     <span class="new-tag">NEW</span>
     <div class="kpi-top">
@@ -668,7 +632,6 @@
     <div class="kpi-desc">
       유입 지표만으로는 검증 불가 — 답변 속도·만족도로 서비스 핵심 가치 측정
     </div>
-
     <div style="border-top:1px solid var(--gray-border);padding-top:12px;margin-top:4px">
       <div class="quality-row">
         <div>
@@ -696,10 +659,8 @@
       </div>
     </div>
   </div>
-
   <div class="footer-update" id="last-update">마지막 업데이트: –</div>
 </main>
-
 <!-- Modal -->
 <div class="modal-backdrop" id="modal" onclick="if(event.target===this)closeModal()">
   <div class="modal">
@@ -712,9 +673,7 @@
     </div>
   </div>
 </div>
-
 <div class="toast" id="toast">링크가 복사됐습니다 ✓</div>
-
 <script>
   // ── KPI config ──
   const KPI = {
@@ -730,13 +689,12 @@
     upload:          { target: 10,  unit: '명', label: '검사기록 업로드' },
     chat_from_result:{ target: 10,  unit: '명', label: '오픈채팅 유입 (결과지 경유)' },
   };
-
   let state = {};
   let editingKey = null;
-
   // ── URL params ──
   function loadFromURL() {
     const params = new URLSearchParams(window.location.search);
+    // support ?view=1#key=val format
     const hash = window.location.hash.slice(1);
     const hashParams = new URLSearchParams(hash.replace(/&/g, '&'));
     Object.keys(KPI).forEach(k => {
@@ -744,41 +702,34 @@
       state[k] = v !== null ? parseInt(v) : 0;
     });
   }
-
   function buildURL() {
     const base = window.location.origin + window.location.pathname;
     const parts = Object.keys(KPI).map(k => `${k}=${state[k] || 0}`).join('&');
     return `${base}?view=1#${parts}`;
   }
-
   // ── Render ──
   function render() {
     Object.keys(KPI).forEach(k => {
       const val = state[k] || 0;
       const el = document.getElementById('val-' + k);
       if (el) el.textContent = val;
-
       const cfg = KPI[k];
       if (!cfg.target) return;
-
       const pct = Math.min(Math.round(val / cfg.target * 100), 100);
       const pctEl = document.getElementById('pct-' + k);
       const barEl = document.getElementById('bar-' + k);
       if (pctEl) pctEl.textContent = pct + '%';
       if (barEl) barEl.style.width = pct + '%';
     });
-
     // Funnel: upload conversion rates
     const inflow = state['inflow_s'] || 0;
     const upload = state['upload'] || 0;
     const chatJoin = state['chat_join'] || 0;
     const chatUpload = state['chat_from_result'] || 0;
-
     const fi = document.getElementById('funnel-inflow');
     const fu = document.getElementById('funnel-upload');
     if (fi) fi.innerHTML = inflow + '<span style="font-size:11px;color:#999">명</span>';
     if (fu) fu.innerHTML = upload + '<span style="font-size:11px;color:#999">명</span>';
-
     const convTotal = document.getElementById('conv-upload-total');
     if (convTotal) {
       convTotal.textContent = inflow > 0 ? Math.round(upload/inflow*100) + '%' : '–';
@@ -789,14 +740,12 @@
     if (convChat) {
       convChat.textContent = chatJoin > 0 && chatUpload > 0 ? Math.round(chatUpload/chatJoin*100) + '%' : '–';
     }
-
     // last update
     const lu = document.getElementById('last-update');
     const now = new Date();
     const fmt = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
     if (lu) lu.textContent = '마지막 업데이트: ' + fmt;
   }
-
   // ── Modal ──
   function openModal(key) {
     editingKey = key;
@@ -828,14 +777,12 @@
     if (e.key === 'Enter') saveModal();
     if (e.key === 'Escape') closeModal();
   });
-
   // ── Toast ──
   function showToast() {
     const t = document.getElementById('toast');
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 2000);
   }
-
   // ── Init ──
   loadFromURL();
   render();
